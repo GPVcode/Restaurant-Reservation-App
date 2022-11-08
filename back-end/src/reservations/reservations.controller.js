@@ -33,8 +33,8 @@ const hasRequiredProperties = hasProperties("first_name", "last_name", "mobile_n
 
 //create function calls the reservationsService.create method and passes in req.body.data which refers to the object containing reservation info. If promise is resolved successfully, the server responds with a 201 status code with newly created reservation. 
 async function create(req, res){
-  const data = await reservationsService.create(req.body.data);
-  res.status(201).json({ data });
+  const reservation = await reservationsService.create(req.body.data);
+  res.status(201).json({ data: reservation });
 }
 
 async function reservationExists(req, res, next){

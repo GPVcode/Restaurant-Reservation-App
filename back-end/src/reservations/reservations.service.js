@@ -21,7 +21,7 @@ function create(reservation){
     return knex("reservations")
         .insert(reservation)
         .returning("*")
-        .then((createdReservations) => createdReservations[0]);
+        .then((result) => result[0]);
 }
 
 

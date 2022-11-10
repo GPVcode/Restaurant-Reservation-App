@@ -56,8 +56,14 @@ async function list(req, res) {
   res.json({ data });
 }
 
+async function destroy(req, res){
+  await reservationsService.delete(res.locals.reservation.reservation_id);
+  res.sendStatus(204);
+}
+
 module.exports = {
   read: [reservationExists, read],
   create: [hasOnlyValidProperties, hasRequiredProperties, create],
-  list,
-};
+  delete: [reservationExists, destroy],
+  list
+}

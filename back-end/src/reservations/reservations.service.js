@@ -1,6 +1,4 @@
 //use this file to store code for generating database queries
-
-const { destroy } = require("../db/connection");
 const knex = require("../db/connection");
 
 //create function list() that builds a query that selects all columns from reservations table
@@ -24,12 +22,26 @@ function create(reservation){
         .then((result) => result[0]);
 }
 
+//create search function
+function search(phoneNumber){
+    return knex("reservations")
+        .where({ mobile_number: phoneNumber })
+}
 
+function destroy(reservation_id){
+    return knex("reservations")
+        .where({ reservation_id })
+        .del();
+}
+// function listDate(){
+ //   return knex(res)
+ //   .where({ reservation_date })
+//}
 
 module.exports = {
     create,
-   // search,
+    search,
     read,
-    list,//: list, listDate,
-    //delete: destroy,
+    list, //list, listDate.
+    delete: destroy,
 }

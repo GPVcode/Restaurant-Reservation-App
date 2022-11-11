@@ -67,3 +67,46 @@ export async function listReservations(params, signal) {
     .then(formatReservationDate)
     .then(formatReservationTime);
 }
+
+
+export async function createReservation(reservation, signal){
+  //post request for new reseration
+  const url = `${API_BASE_URL}/reservations`;
+  const options = { 
+    method: "POST", 
+    headers, 
+    body: JSON.stringify({ data: reservation }), 
+    signal,
+  };
+  return await fetchJson(url, options, reservation);
+}
+
+export async function readReservation(reservation_id, signal){
+  const url = `${API_BASE_URL}/reservations/${reservation_id}`;
+  return await fetchJson(url, { headers, signal }, {})
+    .then(formatReservationDate)
+    .then(formatReservationTime);
+}
+
+
+export async function cancelReservation(reservationId, signal) {
+  const url = `${API_BASE_URL}/reservations/${reservationId}/status`;
+  const options = {
+    method: "PUT",
+    headers,
+    body: JSON.stringify({
+      data: {
+        status: "cancelled",
+      },
+    }),
+    signal,
+  };
+  return await fetchJson(url, options, {});
+}
+
+//There first you will enter your url then choose the method like get, put, post or delete.
+//Similar like here first you can define the url for new reservation like -> const url = `${API_BASE_URL}/reservations`;
+//Now define a options object, where we will setup headers.
+//Like method is post, and the headers that we have already defined.
+//Here method is post, and body data is data:reservation.
+//Now call you fetchJson function and pass all of these as a argument

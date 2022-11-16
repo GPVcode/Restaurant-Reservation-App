@@ -15,8 +15,6 @@ function hasOnlyValidProperties(req, res, next){
     "reservation_time",
     "people",
     "status",
-    "created_at",
-    "updated_at",
     "reservation_id"
   ]);
   const invalidFields = Object.keys(data).filter(

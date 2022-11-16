@@ -104,8 +104,8 @@ function FormReservation(){
         history.push(
             `/dashboard?date=`+res_date
         )
-        .catch(setError);
       })
+        .catch(setError);
     }
     // const submitHandler = (e) => {
     //     e.preventDefault();

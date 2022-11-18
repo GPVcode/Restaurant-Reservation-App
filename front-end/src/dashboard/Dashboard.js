@@ -12,7 +12,7 @@ import Reservations from "./Reservations";
 function Dashboard({ date }) {
   const [reservations, setReservations] = useState([]);
   const [reservationsError, setReservationsError] = useState(null);
-
+  console.log(reservations)
   useEffect(loadDashboard, [date]);
 
   function loadDashboard() {

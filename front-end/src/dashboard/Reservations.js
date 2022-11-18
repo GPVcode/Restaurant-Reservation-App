@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-function Reservations({onCancel, reservations  }) {
+function Reservations({ onCancel, reservations  }) {
   console.log("reservations.js : ", reservations);
   function cancelHandler({
       target: { dataset: { reservationIdCancel } } = {},
@@ -30,7 +30,7 @@ function Reservations({onCancel, reservations  }) {
               <div className="col-sm-1">
                 <Link className="btn" to={`/reservations/${reservation.reservation_id}/seat`}>seat</Link>
                 <Link className="btn" to={`/reservations/${reservation.reservation_id}/edit`}>edit</Link>
-                <Link className="btn" to={`/reservations/${reservation.reservation_id}/cancel`}>cancel</Link>
+
                 <button type="button" className="btn cancel" data-reservation-id-cancel={reservation.reservation_id} onClick={cancelHandler}>Cancel</button>
               </div>
           ) : ( "" )}

@@ -2,14 +2,19 @@
 const knex = require("../db/connection");
 const tableName = "reservations"
 
-//create function list() that builds a query that selects all columns from reservations table
-function list(date){
-    // return knex("reservations").select("*");
-    return knex(tableName)
-        .where("reservation_date", date)
-        .whereNotIn("status", ["finished", "cancelled"])
-        .orderBy("reservation_time");
+function list(){
+  return knex(tableName)
+    .whereNotIn("status", ["finished", "cancelled"])
+    .orderBy("reservation_time");
 }
+//create function list() that builds a query that selects all columns from reservations table
+// function list(date){
+//     // return knex("reservations").select("*");
+//     return knex(tableName)
+//         .where("reservation_date", date)
+//         .whereNotIn("status", ["finished", "cancelled"])
+//         .orderBy("reservation_time");
+// }
 
 //create function creates knex query that inserts new reservation into reservations table while retunring all columns from newly inserted row
 function create(reservation){

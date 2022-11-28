@@ -1,36 +1,16 @@
-// const { table } = require("../connection");
-
-// exports.up = function(knex) {
-// return knex.schema.createTable("tables", (table) => {
-// table.increments("table_id").primary().notNullable();
-// table.string("table_name").notNullable();
-// table.integer("capacity").notNullable();
-// table.string("status").notNullable();
-// table.integer("reservation_id").unsigned();
-// table
-// .foreign("reservation_id")
-// .references("reservation_id")
-// .inTable("reservations")
-// .onDelete("SET NULL");
-// table.timestamps(true, true);
-// });
-// };
-
 exports.up = function (knex) {
     return knex.schema.createTable("tables", (table) => {
       table.increments("table_id").primary();
-      table.string("table_name").notNullable();
-      table.integer("capacity", null).unsigned().notNullable();
+      table.string("table_name");
+      table.integer("capacity").notNullable();
+      table.integer("reservation_id");
       table
-        .integer("reservation_id")
-        .unsigned()
-        .nullable()
-        .defaultTo(null)
-        .index()
+        .foreign("reservation_id")
         .references("reservation_id")
-        .inTable("reservations");
-      table.timestamps(true, true);
-    });
+        .inTable("reservations")
+        .onDelete("cascade");
+      table.timestamps("table_status");
+    })
   };
 exports.down = function(knex) {
     return knex.schema.dropTable("tables");

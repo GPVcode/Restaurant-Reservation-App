@@ -9,24 +9,24 @@ const controller = require("./reservations.controller");
 const methodNotAllowed = require("../errors/methodNotAllowed");
 
 router.route("/")
-    .post(controller.create)
     .get(controller.list)
+    .post(controller.create)
     .all(methodNotAllowed);
 
-// router
-// .route("/new")
+router
+    .route("/new")
+    .post(controller.create)
+    .all(methodNotAllowed);
     
 router
-    .route("/:reservation_id")
+    .route("/:reservationId([0-9]+)")
     .get(controller.read)
-    .delete(controller.delete)
+    .put(controller.updatedReservation)
     .all(methodNotAllowed);
 
 router
-    .route("/:reservation_id/status")
-    .put(controller.status)
+    .route("/:reservationId([0-9])+)/status")
+    .put(controller.updateStatus)
     .all(methodNotAllowed);
-
-    // .route("/:reservationId([0-9]+)")
 
 module.exports = router;

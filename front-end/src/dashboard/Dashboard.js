@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { listReservations, cancelReservation } from "../utils/api";
+import { listReservations, deleteTableReservation } from "../utils/api";
 import ErrorAlert from "../layout/ErrorAlert";
 import Reservations from "./Reservations";
+import { useHistory, useLocation } from "react-router-dom"
+import { previous, next } from "../utils/date-time";
 
 /**
  * Defines the dashboard page.
@@ -12,7 +14,8 @@ import Reservations from "./Reservations";
 function Dashboard({ date }) {
   const [reservations, setReservations] = useState([]);
   const [reservationsError, setReservationsError] = useState(null);
-  console.log(reservations)
+  const history = useHistory();
+
   useEffect(loadDashboard, [date]);
 
   function loadDashboard() {
@@ -24,9 +27,41 @@ function Dashboard({ date }) {
     return () => abortController.abort();
   }
 
+  //today's reservations
+  function handleToday(){
+    history.push(`/dashboard`);
+  }
+
+  //previous reservations
+  function handlePrev(){
+    const newDate = previous(date);
+    history.push(`/dashboard?date=${newDate}`);
+  }
+
+  //upcoming reservations
+  function handleNext(){
+    history.push(`/dashboard?date=${next(date)}`);
+  }
+
   // cancel reservation
-  function onCancel(reservation_id) {
-    cancelReservation(reservation_id).then(loadDashboard).catch(setReservationsError);
+  async function onCancel(reservation){
+    try{
+      const { status } = await deleteTableReservation(reservation.reservation_id);
+      const updated = reservations.map((res) => {
+        if(res.reservation_id === reservation.reservation_id){
+          res.status = status;
+        }
+        return res;
+      });
+      setReservations(updated);
+      history.go(`/dashboard?date=${reservation.reservation_date}`);
+    } catch(error){
+      setReservationsError(error)
+    }
+  }
+
+   function onCancel(reservation_id) {
+    deleteTableReservation(reservation_id).then(loadDashboard).catch(setReservationsError);
   }
 
   // finish table
@@ -37,12 +72,28 @@ function Dashboard({ date }) {
   return (
     <main>
       <h1>Dashboard</h1>
-      <div className="d-md-flex mb-3">
-        <h4 className="mb-0">Reservations for date</h4>
+      <div>
+        <h4 className="mb-0">Reservations for {date}</h4>
+      </div>
+      <div className="pb-2">
+        <button className="btn btn-primary mr-1" onClick={handleToday}>
+          today
+        </button>
+        <button className="btn btn-primary mr-1" onClick={handlePrev}>
+          previous
+        </button>
+        <button className="btn btn-primary mr-1"onClick={handleNext}>
+          next
+        </button>
       </div>
       <ErrorAlert error={reservationsError} />
       {/* {JSON.stringify(reservations)} */}
-      <Reservations reservations={reservations} onCancel={onCancel}/>
+      <Reservations 
+        reservations={reservations} 
+        setReservations={setReservations}
+        setError={setReservationsError}
+        onCancel={onCancel}
+      />
       <div className="d-md-flex mb-3">
         <h4 className="mb-0">Tables</h4>
       </div>

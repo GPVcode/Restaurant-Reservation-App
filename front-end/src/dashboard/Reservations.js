@@ -1,7 +1,7 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 
-function Reservations({ onCancel, reservations  }) {
+function Reservations({ onCancel, reservations, setReservations  }) {
   console.log("reservations.js : ", reservations);
   function cancelHandler({
       target: { dataset: { reservationIdCancel } } = {},

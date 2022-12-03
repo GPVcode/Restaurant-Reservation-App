@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { listReservations, deleteTableReservation } from "../utils/api";
+import { listReservations, listTables } from "../utils/api";
 import ErrorAlert from "../layout/ErrorAlert";
-import Reservations from "./Reservations";
-import { useHistory, useLocation } from "react-router-dom"
-import { previous, next } from "../utils/date-time";
+import Reservation from "../reservations/Reservations";
+import Table from "../Tables/Table.js";
+import makeDate from "./makeDate";
 
 /**
  * Defines the dashboard page.
@@ -11,94 +11,88 @@ import { previous, next } from "../utils/date-time";
  *  the date for which the user wants to view reservations.
  * @returns {JSX.Element}
  */
-function Dashboard({ date }) {
+
+export default function Dashboard() {
+  const [dateAugment , setDateAugment] = useState(0);
   const [reservations, setReservations] = useState([]);
   const [reservationsError, setReservationsError] = useState(null);
-  const history = useHistory();
+  const [tables, setTables] = useState([]);
+  const [tablesError, setTablesError] = useState(null);
 
-  useEffect(loadDashboard, [date]);
-
-  function loadDashboard() {
+  const loadReservations = () => {
     const abortController = new AbortController();
+    const date = makeDate(dateAugment);
     setReservationsError(null);
     listReservations({ date }, abortController.signal)
       .then(setReservations)
       .catch(setReservationsError);
     return () => abortController.abort();
-  }
+  };
 
-  //today's reservations
-  function handleToday(){
-    history.push(`/dashboard`);
-  }
+  const loadTables = () => {
+    const abortController = new AbortController();
+    setTablesError(null);
+    listTables(abortController.signal)
+      .then(setTables)
+      .catch(setTablesError);
+    return () => abortController.abort();
+  };
 
-  //previous reservations
-  function handlePrev(){
-    const newDate = previous(date);
-    history.push(`/dashboard?date=${newDate}`);
-  }
+  const loadBoth = () => {
+    const controller = new AbortController();
+    loadReservations();
+    loadTables();
+    return () => controller.abort();
+  };
 
-  //upcoming reservations
-  function handleNext(){
-    history.push(`/dashboard?date=${next(date)}`);
-  }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  useEffect(loadBoth, [dateAugment])
 
-  // cancel reservation
-  async function onCancel(reservation){
-    try{
-      const { status } = await deleteTableReservation(reservation.reservation_id);
-      const updated = reservations.map((res) => {
-        if(res.reservation_id === reservation.reservation_id){
-          res.status = status;
-        }
-        return res;
-      });
-      setReservations(updated);
-      history.go(`/dashboard?date=${reservation.reservation_date}`);
-    } catch(error){
-      setReservationsError(error)
-    }
-  }
-
-   function onCancel(reservation_id) {
-    deleteTableReservation(reservation_id).then(loadDashboard).catch(setReservationsError);
-  }
-
-  // finish table
-  function onFinish(table_id, reservation_id) {
-    // finishTable(table_id, reservation_id).then(loadDashboard).catch(setReservationsError);
-  }
+  //previous/today/next buttons
+  const buttonSetDate = (event) => {
+    event.preventDefault();
+    const buttonText = event.target.innerHTML;
+    switch (buttonText) {
+      case "Previous":
+        setDateAugment(state => state - 1)
+        break;
+      case "Today":
+        setDateAugment(0)
+        break;
+      case "Next":
+        setDateAugment(state => state + 1)
+        break;
+      default:
+        break;
+    };
+  };
 
   return (
     <main>
       <h1>Dashboard</h1>
-      <div>
-        <h4 className="mb-0">Reservations for {date}</h4>
-      </div>
-      <div className="pb-2">
-        <button className="btn btn-primary mr-1" onClick={handleToday}>
-          today
-        </button>
-        <button className="btn btn-primary mr-1" onClick={handlePrev}>
-          previous
-        </button>
-        <button className="btn btn-primary mr-1"onClick={handleNext}>
-          next
-        </button>
+      <div className="d-md-flex mb-3">
+        <h4 className="mb-0">Reservations for {makeDate(dateAugment)}</h4>
       </div>
       <ErrorAlert error={reservationsError} />
-      {/* {JSON.stringify(reservations)} */}
-      <Reservations 
-        reservations={reservations} 
-        setReservations={setReservations}
-        setError={setReservationsError}
-        onCancel={onCancel}
-      />
-      <div className="d-md-flex mb-3">
-        <h4 className="mb-0">Tables</h4>
+      <div className="reservations">
+      <Reservation reservations={reservations} />
+      <div className="btn-group" role="group" aria-label="Basic example" style={{marginBottom: 15}}>
+        <button type="button" className="btn btn-primary" onClick={buttonSetDate}>
+          Previous
+        </button>
+        <button type="button" className="btn btn-primary" onClick={buttonSetDate}>
+          Today
+        </button>
+        <button type="button" className="btn btn-primary" onClick={buttonSetDate}>
+          Next
+        </button>
+      </div>
+      <ErrorAlert error={tablesError} />
+      <div className="tables">
+        {tables.length < 1 ? <p>Loading...</p> :
+        <Table tables={tables} />}
+      </div>
       </div>
     </main>
   );
 }
-
-export default Dashboard;

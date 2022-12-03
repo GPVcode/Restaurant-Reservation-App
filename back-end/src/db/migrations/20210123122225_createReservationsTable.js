@@ -1,18 +1,17 @@
-
 exports.up = function (knex) {
-  return knex.schema.createTable("reservations", (table) => {
-    table.increments("reservation_id").primary();
-    table.string("first_name");
-    table.string("last_name");
-    table.string("mobile_number");
-    table.integer("people");
-    table.string('status');
-    table.date("reservation_date");
-    table.time("reservation_time");
+  return knex.schema.createTable('reservations', (table) => {
+    table.increments('reservation_id').primary();
+    table.string('first_name').notNullable();
+    table.string('last_name').notNullable();
+    table.string('mobile_number').notNullable();
+    table.string('reservation_date').notNullable();
+    table.string('reservation_time').notNullable();
+    table.integer('people').notNullable();
+    table.string('status').notNullable();
     table.timestamps(true, true);
   });
 };
-  /** called whenever a migration is rolled back */
-  exports.down = function (knex) {
+
+exports.down = function (knex) {
   return knex.schema.dropTable("reservations");
-  };
+};

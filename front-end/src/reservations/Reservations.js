@@ -4,14 +4,12 @@ import { cancelReservation } from "../utils/api";
 export default function Reservation({ reservations }) {
   const history = useHistory();
 
-  const cancelHandler = (event) => {
-    event.preventDefault();
+  const cancelHandler = (reservation_id) => {
     const controller = new AbortController();
-    const index =
-      event.target.parentElement.parentElement.getAttribute("index");
     const rock = window.confirm("Do you really want to change this?");
+    debugger
     if (rock) {
-      cancelReservation(reservations[index], controller.signal).then(() =>
+      cancelReservation(reservation_id, controller.signal).then(() =>
         history.push("/")
       );
     }
@@ -75,7 +73,7 @@ export default function Reservation({ reservations }) {
                         <button
                           type="button"
                           className="btn btn-danger m-1"
-                          onClick={cancelHandler}
+                          onClick={(event) => cancelHandler(reservation_id)}
                         >
                           Cancel
                         </button>

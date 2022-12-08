@@ -6,9 +6,9 @@ export default function Reservation({ reservations }) {
 
   const cancelHandler = (reservation_id) => {
     const controller = new AbortController();
-    const rock = window.confirm("Do you really want to change this?");
+    const alert = window.confirm("Do you really want to change this?");
     debugger
-    if (rock) {
+    if (alert) {
       cancelReservation(reservation_id, controller.signal).then(() =>
         history.push("/")
       );

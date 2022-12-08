@@ -6,7 +6,7 @@ import NewReservation from "../reservations/NewReservation"
 import NotFound from "./NotFound";
 import NewTable from "../Tables/NewTable";
 import Search from "../search/Search";
-import Edit from "../Edit/Edit";
+import Edit from "../reservations/EditReservation.js";
 import Seat from "../Seat/Seat"
 
 /**

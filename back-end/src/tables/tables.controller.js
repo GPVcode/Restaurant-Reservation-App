@@ -110,7 +110,8 @@ const tableNameExists = async (req, res, next) => {
 //issue #8
 const capacityExists = async (req, res, next) => {
   const { capacity } = req.body.data;
-  if (capacity && !isNaN(capacity) && capacity > 0) {
+  const isNumber = !isNaN(capacity) && typeof capacity === "number";
+  if (capacity && isNumber && capacity > 0) {
     return next();
   } else {
     return next({
@@ -133,6 +134,15 @@ const notOccupied = async (req, res, next) => {
   }
 };
 
+
+/*
+if(typeof capacity !== "integer"){
+    return next({
+      message: "Capacity is not a number",
+      status: 400,
+    });
+  }
+*/
 //CRUDL functions
 //issue #8
 const create = async (req, res) => {

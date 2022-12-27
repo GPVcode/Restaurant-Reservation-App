@@ -149,11 +149,13 @@ const reservationTimeExists = async (req, res, next) => {
   if(req.params.reservation_option === "status") return next();
   const { reservation_time } = req.body.data;
   const timeRegex = new RegExp(/^(0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$/);
+
   if (
     reservation_time &&
     reservation_time !== "" &&
     reservation_time.match(timeRegex)
   ) {
+
     return next();
   } else {
     return next({

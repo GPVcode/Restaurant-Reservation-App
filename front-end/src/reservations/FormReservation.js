@@ -10,8 +10,8 @@ export default function FormReservation({ reservation }) {
         first_name: "",
         last_name: "",
         mobile_number: "",
-        reservation_date: "",
-        reservation_time: "",
+        reservation_date: null,
+        reservation_time: null,
         people: 0,
         status: "booked",
       };
@@ -19,6 +19,7 @@ export default function FormReservation({ reservation }) {
   const [reservationData, setReservationData] = useState({
     ...defaultReservationData,
   });
+
   const [createResError, setResError] = useState(null);
   const history = useHistory();
 
@@ -32,13 +33,14 @@ export default function FormReservation({ reservation }) {
 
   const submitHandler = (event) => {
     event.preventDefault();
+    reservationData.people = Number(reservationData.people)
     const controller = new AbortController();
     if (reservation) {
-      updateReservation(reservationData, controller.signal) //THIS WORKS !!! WOOO
+      updateReservation(reservationData, controller.signal) 
         .then(() => history.push("/"))
         .catch(setResError);
     } else {
-      createReservation(reservationData, controller.signal) //THIS WORKS !!! WOOO
+      createReservation(reservationData, controller.signal) 
         .then(() => history.push("/"))
         .catch(setResError);
     }
@@ -53,6 +55,7 @@ export default function FormReservation({ reservation }) {
   };
 
   return (
+    
     <div>
       {reservation ? <h1>Edit Reservation</h1> : <h1>New Reservation</h1>}
       <ErrorAlert error={createResError} />
@@ -100,8 +103,8 @@ export default function FormReservation({ reservation }) {
             className="form-control"
             name="reservation_date"
             id="reservation_date"
-            pattern="\d{4}-\d{2}-\d{2}"
-            value={reservationData.reservation_date}
+            pattern="\d{2}\/\d{2}\/\d{4}"
+            value={new Date(reservationData.reservation_date).toLocaleDateString("en-US")}
             onChange={changeHandler}
           />
         </div>

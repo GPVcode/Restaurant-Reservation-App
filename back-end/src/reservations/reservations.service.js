@@ -19,12 +19,20 @@ const read = (reservation_id) => {
 
 
 const update = async (updatedReservation) => {
-  const { reservation_id } = updatedReservation;
-  await knex("reservations")
-    .where({ reservation_id })
-    .update(updatedReservation, "*");
+  // const { reservation_id } = updatedReservation;
+  // await knex("reservations")
+  //   .where({ reservation_id })
+  //   .update(updatedReservation, "*");
 
-  return read(reservation_id);
+  // return read(reservation_id);]
+
+ 
+  return knex("reservations")
+    .where({ reservation_id: updatedReservation.reservation_id})
+    .update(updatedReservation, "*")
+    .then((records) => records[0])
+
+  // return read(reservation_id);
 }
 
 const destroy = () => {

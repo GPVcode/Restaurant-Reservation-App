@@ -76,7 +76,9 @@ export async function listTables(signal) {
 
 export async function readReservation(id, signal) {
   const url = `${API_BASE_URL}/reservations/${id}`;
-  return await fetchJson(url, { headers, signal }, []);
+  return await fetchJson(url, { headers, signal }, [])
+    .then(formatReservationDate)
+    .then(formatReservationTime);
 }
 
 export async function createReservation(reservation, signal) {
@@ -132,20 +134,44 @@ export async function deleteTable(table_id, signal) {
 }
 
 export async function updateReservation(reservation, signal) {
- const url = `${API_BASE_URL}/reservations/${reservation.reservation_id}`;
- return await fetchJson(
-   url,
-   {
-     body: JSON.stringify({ data: reservation }),
-     headers,
-     method: "PUT",
-     signal,
-   },
-   []
- )
-   .then(formatReservationDate)
-   .then(formatReservationTime);
+  const { reservation_date, reservation_time, reservation_id } = reservation;
+  const url = `${API_BASE_URL}/reservations/${reservation_id}`;
+
+  const data = {
+    ...reservation,
+    reservation_date: Array.isArray(reservation_date)
+      ? reservation_date[0]
+      : reservation_date,
+    reservation_time: Array.isArray(reservation_time)
+      ? reservation_time[0]
+      : reservation_time,
+  };
+  console.log("line 149", data)
+  const options = {
+    method: "PUT",
+    headers,
+    body: JSON.stringify({ data }),
+    signal,
+  };
+  const response = await fetchJson(url, options, reservation);
+
+  return Array.isArray(response) ? response[0] : response;
 }
+// export async function updateReservation(reservation, signal) {
+//  const url = `${API_BASE_URL}/reservations/${reservation.reservation_id}`;
+//  return await fetchJson(
+//    url,
+//    {
+//      body: JSON.stringify({ data: reservation }),
+//      headers,
+//      method: "PUT",
+//      signal,
+//    },
+//    []
+//  )
+//    .then(formatReservationDate)
+//    .then(formatReservationTime);
+// }
 
 export async function cancelReservation(reservation_id) {
   const url = new URL(`${API_BASE_URL}/reservations/${reservation_id}/status`);

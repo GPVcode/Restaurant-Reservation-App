@@ -1,9 +1,16 @@
 import React, { useEffect, useState } from "react";
-import { listReservations, listTables } from "../utils/api";
+import { 
+  cancelReservation,
+  listReservations, 
+  listTables 
+} from "../utils/api";
 import ErrorAlert from "../layout/ErrorAlert";
 import Reservation from "../reservations/Reservations";
 import Table from "../Tables/Table.js";
 import makeDate from "./makeDate";
+
+// import { next, previous, today } from "../utils/date-time";
+// import DateButtons from "./DateButtons";
 
 /**
  * Defines the dashboard page.
@@ -19,6 +26,10 @@ export default function Dashboard() {
   const [tables, setTables] = useState([]);
   const [tablesError, setTablesError] = useState(null);
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  
+
+
   const loadReservations = () => {
     const abortController = new AbortController();
     const date = makeDate(dateAugment);
@@ -26,28 +37,41 @@ export default function Dashboard() {
     listReservations({ date }, abortController.signal)
       .then(setReservations)
       .catch(setReservationsError);
-    return () => abortController.abort();
-  };
 
-  const loadTables = () => {
-    const abortController = new AbortController();
-    setTablesError(null);
     listTables(abortController.signal)
       .then(setTables)
       .catch(setTablesError);
     return () => abortController.abort();
   };
 
-  const loadBoth = () => {
-    const controller = new AbortController();
-    loadReservations();
-    loadTables();
-    return () => controller.abort();
-  };
+  useEffect(loadReservations, [dateAugment])
 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  useEffect(loadBoth, [dateAugment])
+  function onCancel(reservation_id) {
+    const abortController = new AbortController();
+    cancelReservation(reservation_id, abortController.signal)
+      .then(loadReservations)
+      .catch(setReservationsError);
 
+    return () => abortController.abort();
+  }
+
+  // const loadTables = () => {
+  //   const abortController = new AbortController();
+  //   setTablesError(null);
+  //   listTables(abortController.signal)
+  //     .then(setTables)
+  //     .catch(setTablesError);
+  //   return () => abortController.abort();
+  // };
+
+  // const loadBoth = () => {
+  //   const controller = new AbortController();
+  //   loadReservations();
+  //   loadTables();
+  //   return () => controller.abort();
+  // };
+
+  
   //previous/today/next buttons
   const buttonSetDate = (event) => {
     event.preventDefault();
@@ -72,10 +96,17 @@ export default function Dashboard() {
       <h1>Dashboard</h1>
       <div className="d-md-flex mb-3">
         <h4 className="mb-0">Reservations for {makeDate(dateAugment)}</h4>
+        {/* <h4 className="mb-0">Reservations for {dateAugment}</h4> */}
       </div>
       <ErrorAlert error={reservationsError} />
       <div className="reservations">
-      <Reservation reservations={reservations} />
+      
+      {/* <DateButtons
+        previous={`/dashboard?date=${previous(date)}`}
+        today={`/dashboard?date=${today()}`}
+        next={`/dashboard?date=${next(date)}`}
+      /> */}
+      <Reservation onCancel={onCancel} reservations={reservations} />
       <div className="btn-group" role="group" aria-label="Basic example" style={{marginBottom: 15}}>
         <button type="button" className="btn btn-primary" onClick={buttonSetDate}>
           Previous

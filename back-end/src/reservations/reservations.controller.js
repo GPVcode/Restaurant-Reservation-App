@@ -149,7 +149,7 @@ const reservationTimeExists = async (req, res, next) => {
   if(req.params.reservation_option === "status") return next();
   const { reservation_time } = req.body.data;
   const timeRegex = new RegExp(/^(0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$/);
-
+  // const timeRegex = new RegExp(/^(0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]$/);
   if (
     reservation_time &&
     reservation_time !== "" &&
@@ -357,3 +357,59 @@ module.exports = {
   ],
   list: [asyncErrorBoundary(list)],
 };
+
+// hasValidFields,
+    // has_first_name,
+    // has_last_name,
+    // has_mobile_number,
+    // has_reservation_date,
+    // has_reservation_time,
+    // has_people,
+    // isValidDate,
+    // statusCheckForPUT,
+    // statusCheckOfRes,
+    // reservationIdExists,
+    // reservationExists,
+    // asyncErrorBoundary(update),
+    // asyncErrorBoundary(reservationIdExists),
+    // asyncErrorBoundary(dataBodyExists),
+    // asyncErrorBoundary(firstNameExists),
+    // asyncErrorBoundary(lastNameExists),
+    // asyncErrorBoundary(mobileNumberExists),
+
+
+    // asyncErrorBoundary(reservationDateExists),
+    // asyncErrorBoundary(reservationDateOccursInPast),
+    // asyncErrorBoundary(reservationOccursOnATuesday),
+    // asyncErrorBoundary(reservationTimeExists),
+    // asyncErrorBoundary(reservationTimeIsWithinBusinessHours),
+    // asyncErrorBoundary(peopleExists),
+    // asyncErrorBoundary(statusCheckForPUT),
+    // asyncErrorBoundary(statusCheckOfRes),
+
+  // asyncErrorBoundary(dataBodyExists),
+    // asyncErrorBoundary(firstNameExists),
+    // asyncErrorBoundary(lastNameExists),
+    // asyncErrorBoundary(mobileNumberExists),
+    // asyncErrorBoundary(reservationDateExists),
+    // asyncErrorBoundary(reservationDateOccursInPast),
+    // asyncErrorBoundary(reservationOccursOnATuesday),
+    // asyncErrorBoundary(reservationTimeExists),
+    // asyncErrorBoundary(reservationTimeIsWithinBusinessHours),
+    // asyncErrorBoundary(peopleExists),
+
+
+
+    // reservationIdExists,
+    // dataBodyExists,
+    // firstNameExists,
+    // lastNameExists,
+    // mobileNumberExists,
+    // reservationDateExists,
+    // reservationDateOccursInPast,
+    // reservationOccursOnATuesday,
+    // reservationTimeExists,
+    // reservationTimeIsWithinBusinessHours,
+    // peopleExists,
+    // statusCheckForPUT,
+    // statusCheckOfRes,

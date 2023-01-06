@@ -15,6 +15,34 @@ export default function Reservation({ reservations }) {
     }
   };
 
+  function toStandardTime(reservation_time) {
+    let time = reservation_time.split(':'); // convert to array
+
+    // fetch
+    var hours = Number(time[0]);
+    var minutes = Number(time[1]);
+    var seconds = Number(time[2]);
+
+    // calculate
+    var timeValue;
+
+    if (hours > 0 && hours <= 12) {
+      timeValue= "" + hours;
+    } else if (hours > 12) {
+      timeValue= "" + (hours - 12);
+    } else if (hours == 0) {
+      timeValue= "12";
+    }
+    
+    timeValue += (minutes < 10) ? ":0" + minutes : ":" + minutes;  // get minutes
+    timeValue += (hours >= 12) ? " P.M." : " A.M.";  // get AM/PM
+
+    // show
+    return timeValue;
+  }
+  
+
+  
   return (
     <table className="table">
       <thead>
@@ -50,7 +78,7 @@ export default function Reservation({ reservations }) {
                   <td>{last_name}</td>
                   <td>{mobile_number}</td>
                   <td>{reservation_date}</td>
-                  <td>{reservation_time}</td>
+                  <td>{toStandardTime(reservation_time)}</td>
                   <td>{people}</td>
                   <td>{status}</td>
                   <td>

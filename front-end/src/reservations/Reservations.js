@@ -21,8 +21,6 @@ export default function Reservation({ reservations }) {
     // fetch
     var hours = Number(time[0]);
     var minutes = Number(time[1]);
-    var seconds = Number(time[2]);
-
     // calculate
     var timeValue;
 

@@ -1,8 +1,6 @@
-# [Restaurant Reservation Capstone](https://restaurant-reservation-app-navy.vercel.app/dashboard)
+# Restaurant Reservation Capstone
 
-## Summary
-
-I completed this full-stack web application as a capstone project for Thinkful's Software Engineering Bootcamp Program. The technologies required to use in this project are React for the front-end, Node.js and Express for the API, and PostgreSQL for the database. 
+This full-stack reservation and table management system was developed as a capstone project for Thinkful's Software Engineering Bootcamp Program. The application utilizes React for the front-end, Node.js and Express for the API, and PostgreSQL for the database.
 
 Instructions:
 
@@ -14,12 +12,9 @@ The original assignment can be found at [Thinkful-Ed/starter-restaurant-reservat
 
 ## Deployed Application
 
-## Application "[Periodic Tables](https://https://restaurant-reservation-app-navy.vercel.app/dashboard)" Deployed 
+[Visit the Deployed Application](https://restaurant-reservation-app-navy.vercel.app/dashboard)
 
-### [Github repo /Frontend](https://github.com/GPVcode/Restaurant-Reservation-App/tree/gpv-dev/front-end) - Deployed via Vercel
-### [Github repo /Backend](https://github.com/GPVcode/Restaurant-Reservation-App/tree/gpv-dev/back-end) - Deployed via Render 
-
-# Client Descriptions
+## Client Descriptions
 
 ### Dashboard
 
@@ -29,7 +24,7 @@ The Dashboard page shows reservations for each calendar date. Listed reservation
 
 ### Create a Reservation
 
-Create a new reservation providing the first name, last name, mobile number, date, time, and party size the reservation.
+Create a new reservation providing the first name, last name, mobile number, date, time, and party size for the reservation.
 
 ![CreateReservation](assets/CreateReservation.png)
 
@@ -53,16 +48,18 @@ Assign a reservation to a table.
 
 ### Search
 
-Search for reservations via mobile number
+Search for reservations via mobile number.
 
 ![Search](assets/Search.png)
 
 ## Installation
 
 1. Fork and clone this repository.
-1. Run `cp ./back-end/.env.sample ./back-end/.env`.
-1. Update the `./back-end/.env` file with the connection URL's to your ElephantSQL database instance.
-1. Run `cp ./front-end/.env.sample ./front-end/.env`.
-1. You should not need to make changes to the `./front-end/.env` file unless you want to connect to a backend at a location other than `http://localhost:5000`.
-1. Run `npm install` to install project dependencies.
-1. Run `npm run start:dev` to start your server in development mode.
+2. Run `cp ./back-end/.env.sample ./back-end/.env`.
+3. Update the `./back-end/.env` file with the connection URL's to your ElephantSQL database instance.
+4. Run `cp ./front-end/.env.sample ./front-end/.env`.
+5. You should not need to make changes to the `./front-end/.env` file unless you want to connect to a backend at a location other than `http://localhost:5000`.
+6. Run `npm install` to install project dependencies.
+7. Run `npm run start:dev` to start your server in development mode.
+
+Please update...
